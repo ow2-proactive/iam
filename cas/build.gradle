@@ -1,0 +1,114 @@
+apply plugin: 'org.springframework.boot'
+apply from: 'https://dl.bintray.com/scalding/generic/waroverlay.gradle'
+apply from: 'https://raw.githubusercontent.com/apereo/cas/5.2.x/gradle/overrides.gradle'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'war'
+
+configurations.compile {
+    exclude group: "org.apache.directory.api", module: "api-ldap-schema-data"
+}
+
+eclipse {
+    classpath {
+        downloadSources = true
+        downloadJavadoc = true
+    }
+}
+
+idea {
+    module {
+        downloadJavadoc = true
+        downloadSources = true
+    }
+}
+
+springBoot {
+    mainClass = "org.ow2.proactive.iam.startup.IAMApplication"
+
+}
+
+repositories {
+    mavenCentral()
+    jcenter()
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+    maven { url 'https://build.shibboleth.net/nexus/content/repositories/releases/' }
+}
+
+dependencies {
+
+    compile "org.apereo.cas:cas-server-webapp-jetty:${project.'cas.version'}@war"
+    compile "org.apereo.cas:cas-server-webapp-init:${project.'cas.version'}"
+
+    //CAS JSON service registry
+    compile "org.apereo.cas:cas-server-support-json-service-registry:${project.'cas.version'}"
+
+    //CAS REST
+    compile "org.apereo.cas:cas-server-support-rest:${project.'cas.version'}"
+
+    //CAS REST for JWT
+    compile "org.apereo.cas:cas-server-support-rest-tokens:${project.'cas.version'}"
+
+    //CAS JWT
+    compile "org.apereo.cas:cas-server-support-token-tickets:${project.'cas.version'}"
+
+    //CAS LDAP
+    compile "org.apereo.cas:cas-server-support-ldap:${project.'cas.version'}"
+
+    // Support IAM LDAP-backend (Apache DS)
+    //compile group: 'org.apache.directory.server', name: 'apacheds-all', version: '2.0.0-M24'
+    compile group: 'org.apache.directory.api', name: 'api-all', version: '1.0.0'
+    compile group: 'org.apache.directory.server', name: 'apacheds-core-api', version: '2.0.0-M24'
+    compile group: 'org.apache.directory.server', name: 'apacheds-protocol-shared', version: '2.0.0-M24'
+    compile group: 'org.apache.directory.server', name: 'apacheds-core-annotations', version: '2.0.0-M24'
+    compile group: 'org.apache.directory.server', name: 'apacheds-protocol-ldap', version: '2.0.0-M24'
+
+    //  To support SpringBootServletInitializer (when IAM is deployed as a traditional WAR file)
+    compile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0'
+}
+
+war {
+    baseName 'iam'
+    version = project.iamVersion
+    includeWarJars = true
+    entryCompression = ZipEntryCompression.STORED
+
+    //Remove default services from the registry
+    exclude('**/Apereo-10000002.json')
+    exclude('**/HTTPSandIMAPS-10000001.json')
+    rootSpec.exclude("**/spring-boot-devtools-1.5.8.RELEASE.jar")
+
+    manifest {
+        attributes 'Start-Class': 'org.ow2.proactive.iam.startup.IAMApplication'
+    }
+}
+
+task run(group: "build", description: "Run the IAM web application in embedded container mode") {
+    dependsOn build
+    doLast {
+        def iamRunArgs = Arrays.asList(project.'iam.run.jvmArgs'.split(" "))
+        javaexec {
+            main = "-jar"
+            jvmArgs = iamRunArgs
+            args = ["build/libs/iam-${project.iamVersion}.war"]
+
+            logger.info "Started ${commandLine}"
+        }
+    }
+}
+
+task debug(group: "build", description: "Debug the IAM web application in embedded mode on port 5005") {
+    dependsOn build
+    doLast {
+        def iamRunArgs = Arrays.asList(project.'iam.debug.jvmArgs'.split(" "))
+        javaexec {
+            main = "-jar"
+            jvmArgs = iamRunArgs
+            args = ["build/libs/iam-${project.iamVersion}.war"]
+
+            logger.info "Started ${commandLine}"
+        }
+    }
+}
+
+
