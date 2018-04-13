@@ -44,7 +44,7 @@ On a successful execution of the above methods, IAM will be available at:
 * `https://localhost:8444/iam`
 
 Access the IAM microservice using the following credentials:
-- login: admin
+- login: admin  
 - password: admin
 
 Further credentials can be found in the file `src/main/resources/config/iam/identities.ldif` (under the `cas` module).
