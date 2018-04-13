@@ -44,7 +44,7 @@ On a successful execution of the above methods, IAM will be available at:
 * `https://localhost:8444/iam`
 
 Access the IAM microservice using the following credentials:
-- login: admin  
+- login: admin
 - password: admin
 
 Further credentials can be found in the file `src/main/resources/config/iam/identities.ldif` (under the `cas` module).
@@ -61,6 +61,7 @@ keytool -export -alias jetty -keystore $path_to_keystore -file keystore.crt
 keytool -import -keystore $JAVA_HOME/jre/lib/security/cacerts -file $path_to_keystore.crt
 # N.B: The default password of the JKS is `changeit`.
 ```
+The above steps must be accomplished before running IAM, otherwise you need to restart it.
 
 ### Clear Gradle Cache
 If you need to, on Linux/Unix systems, you can delete all the existing artifacts (artifacts and metadata)
