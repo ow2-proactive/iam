@@ -37,7 +37,7 @@ Or:
 Run IAM as an executable WAR:
 
 ```bash
-java -jar iam-xx.war
+java -jar cas/build/libs/iam-xx.war
 ```
 On a successful execution of the above methods, IAM will be available at:
 
@@ -61,7 +61,7 @@ keytool -export -alias jetty -keystore $path_to_keystore -file keystore.crt
 keytool -import -keystore $JAVA_HOME/jre/lib/security/cacerts -file $path_to_keystore.crt
 # N.B: The default password of the JKS is `changeit`.
 ```
-The above steps must be accomplished before running IAM, otherwise you need to restart it.
+N.B: The above steps must be accomplished before running IAM, otherwise you need to restart it.
 
 ### Clear Gradle Cache
 If you need to, on Linux/Unix systems, you can delete all the existing artifacts (artifacts and metadata)
