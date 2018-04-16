@@ -1,7 +1,6 @@
 apply plugin: 'com.github.kt3k.coveralls'
 apply plugin: 'antlr'
 apply plugin: 'jacoco'
-apply plugin: 'java'
 apply plugin: 'maven'
 
 apply plugin: 'org.springframework.boot'
@@ -33,6 +32,7 @@ coveralls {
 uploadArchives {
     repositories {
         mavenDeployer {
+
             snapshotRepository(url: "http://repository.activeeon.com/content/repositories/snapshots/") {
                 authentication(userName: "${System.getProperty('nexusUsername')}",
                         password: "${System.getProperty('nexusPassword')}")
@@ -73,7 +73,6 @@ idea {
 
 springBoot {
     mainClass = "org.ow2.proactive.iam.startup.IAMApplication"
-
 }
 
 repositories {
@@ -158,3 +157,5 @@ task debug(group: "build", description: "Debug the IAM web application in embedd
         }
     }
 }
+
+uploadArchives.dependsOn assemble
