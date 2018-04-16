@@ -37,23 +37,24 @@ import org.apache.directory.server.core.api.DirectoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
 public class LDAPIdentityManagement implements IdentityManagement {
 
     private static final Logger logger = LoggerFactory.getLogger(Class.class);
 
-    private DirectoryService directoryService ;
-    private String usersBase ;
+    private DirectoryService directoryService;
+
+    private String usersBase;
+
     private String encryptionAlgorithm;
 
-
     public LDAPIdentityManagement(DirectoryService directoryService, String usersBase,
-                                  String passwordEncryptionAlgorithm){
+            String passwordEncryptionAlgorithm) {
         if (directoryService.isStarted()) {
             this.directoryService = directoryService;
             this.usersBase = usersBase;
             this.encryptionAlgorithm = passwordEncryptionAlgorithm;
-        }
-        else
+        } else
             throw new RuntimeException("Directory service is not started");
 
     }
@@ -66,7 +67,7 @@ public class LDAPIdentityManagement implements IdentityManagement {
             entry.add("uid", id.getLogin());
             entry.add("cn", id.getName());
             entry.add("sn", id.getName());
-            entry.add("role",id.getRole());
+            entry.add("role", id.getRole());
             entry.add("userpassword", encryptPassword(encryptionAlgorithm, id.getPassword()));
             entry.add("objectClass", "top");
             entry.add("objectClass", "person");
@@ -120,7 +121,7 @@ public class LDAPIdentityManagement implements IdentityManagement {
             Cursor<Entry> cursor = directoryService.getAdminSession().search(dn, "(objectclass=person)");
             //Iterator<Entry> iterator = cursor.iterator();
 
-            for (Entry entry : cursor){
+            for (Entry entry : cursor) {
                 logger.info("Identity found: " + entry.getDn().toString());
             }
 

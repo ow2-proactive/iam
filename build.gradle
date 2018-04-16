@@ -2,13 +2,28 @@ buildscript {
     repositories {
         mavenLocal()
         jcenter()
+        maven {
+            url "http://repository.activeeon.com/content/groups/proactive/"
+        }
     }
+
     dependencies {
+        classpath "com.diffplug.gradle.spotless:spotless:2.4.0"
+        classpath "org.ow2.proactive:coding-rules:1.0.0"
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${project.'springboot.version'}"
+        classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.5.0'
+    }
+
+    dependencies {
+        delete "gradle/ext"
+        ant.unjar src: configurations.classpath.find { it.name.startsWith("coding-rules") }, dest: 'gradle/ext'
     }
 }
 
+apply from: "$rootDir/gradle/ext/coding-format.gradle"
+
 subprojects {
+
     task allDependenciesInsight(type: DependencyInsightReportTask, description: "Produce insight information for all dependencies") {}
     task allDependencies(type: DependencyReportTask, description: "Display a graph of all project dependencies") {}
 }

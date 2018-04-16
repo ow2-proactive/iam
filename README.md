@@ -1,4 +1,4 @@
-IAM 
+IAM
 ============================
 ![N|Solid](https://try.activeeon.com/assets/image/proactive-arrow-150.png)
 
@@ -74,4 +74,3 @@ Same strategy applies to Windows too, provided you switch `$HOME` to its equival
 
 ### External Deployment
 Some issues have to be fixed to deploy the war to a traditional servlet container.
-

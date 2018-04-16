@@ -1,9 +1,35 @@
+/*
+ * ProActive Parallel Suite(TM):
+ * The Open Source library for parallel and distributed
+ * Workflows & Scheduling, Orchestration, Cloud Automation
+ * and Big Data Analysis on Enterprise Grids & Clouds.
+ *
+ * Copyright (c) 2007 - 2017 ActiveEon
+ * Contact: contact@activeeon.com
+ *
+ * This library is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation: version 3 of
+ * the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * If needed, contact us to obtain a release under GPL Version 2 or 3
+ * or a different license than the AGPL.
+ */
 package org.ow2.proactive.iam.startup;
 
-import org.apereo.cas.CasEmbeddedContainerUtils;
-import org.apereo.cas.web.CasWebApplicationContext;
-import org.apereo.cas.configuration.CasConfigurationProperties;
+import java.util.Map;
 
+import org.apereo.cas.CasEmbeddedContainerUtils;
+import org.apereo.cas.configuration.CasConfigurationProperties;
+import org.apereo.cas.web.CasWebApplicationContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.Banner;
@@ -28,20 +54,21 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import java.util.Map;
-
 
 @EnableDiscoveryClient
 @SpringBootApplication(exclude = { HibernateJpaAutoConfiguration.class, JerseyAutoConfiguration.class,
-        GroovyTemplateAutoConfiguration.class, JmxAutoConfiguration.class, DataSourceAutoConfiguration.class, RedisAutoConfiguration.class,
-        MongoAutoConfiguration.class, MongoDataAutoConfiguration.class, CassandraAutoConfiguration.class,
-        DataSourceTransactionManagerAutoConfiguration.class, MetricsDropwizardAutoConfiguration.class, RedisRepositoriesAutoConfiguration.class })
+                                   GroovyTemplateAutoConfiguration.class, JmxAutoConfiguration.class,
+                                   DataSourceAutoConfiguration.class, RedisAutoConfiguration.class,
+                                   MongoAutoConfiguration.class, MongoDataAutoConfiguration.class,
+                                   CassandraAutoConfiguration.class,
+                                   DataSourceTransactionManagerAutoConfiguration.class,
+                                   MetricsDropwizardAutoConfiguration.class, RedisRepositoriesAutoConfiguration.class })
 @EnableConfigurationProperties(CasConfigurationProperties.class)
 @EnableAsync
 @EnableTransactionManagement(proxyTargetClass = true)
 @EnableScheduling
 
-public class IAMApplication  extends  SpringBootServletInitializer {
+public class IAMApplication extends SpringBootServletInitializer {
 
     private static final Logger logger = LoggerFactory.getLogger(IAMApplication.class);
 
@@ -58,16 +85,19 @@ public class IAMApplication  extends  SpringBootServletInitializer {
         // start CAS
         final Map<String, Object> properties = CasEmbeddedContainerUtils.getRuntimeProperties(Boolean.TRUE);
         final Banner banner = CasEmbeddedContainerUtils.getCasBannerInstance();
-        new SpringApplicationBuilder(IAMApplication.class).banner(banner).web(true).properties(properties).logStartupInfo(false).contextClass(CasWebApplicationContext.class).run(args);
+        new SpringApplicationBuilder(IAMApplication.class).banner(banner)
+                                                          .web(true)
+                                                          .properties(properties)
+                                                          .logStartupInfo(false)
+                                                          .contextClass(CasWebApplicationContext.class)
+                                                          .run(args);
     }
-
 
     @Override
     protected SpringApplicationBuilder configure(final SpringApplicationBuilder builder) {
         final Map<String, Object> properties = CasEmbeddedContainerUtils.getRuntimeProperties(Boolean.TRUE);
-        return builder
-                .sources(IAMApplication.class)
-                .properties(properties)
-                .banner(CasEmbeddedContainerUtils.getCasBannerInstance());
+        return builder.sources(IAMApplication.class)
+                      .properties(properties)
+                      .banner(CasEmbeddedContainerUtils.getCasBannerInstance());
     }
 }

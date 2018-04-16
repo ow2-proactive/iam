@@ -1,3 +1,9 @@
+apply plugin: 'com.github.kt3k.coveralls'
+apply plugin: 'antlr'
+apply plugin: 'jacoco'
+apply plugin: 'java'
+apply plugin: 'maven'
+
 apply plugin: 'org.springframework.boot'
 apply from: 'https://dl.bintray.com/scalding/generic/waroverlay.gradle'
 apply from: 'https://raw.githubusercontent.com/apereo/cas/5.2.x/gradle/overrides.gradle'
@@ -5,8 +11,50 @@ apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'war'
 
-configurations.compile {
-    exclude group: "org.apache.directory.api", module: "api-ldap-schema-data"
+group = 'org.ow2.proactive'
+version = project.iamVersion
+
+configurations {
+    integrationTestCompile.extendsFrom testCompile
+    integrationTestRuntime.extendsFrom testRuntime
+    compile.exclude group: "org.apache.directory.api", module: "api-ldap-schema-data"
+}
+
+compileJava {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+}
+
+coveralls {
+    sourceDirs = allprojects.sourceSets.main.allSource.srcDirs.flatten()
+    jacocoReportPath = "${buildDir}/reports/jacoco/test/jacocoTestReport.xml"
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            snapshotRepository(url: "http://repository.activeeon.com/content/repositories/snapshots/") {
+                authentication(userName: "${System.getProperty('nexusUsername')}",
+                        password: "${System.getProperty('nexusPassword')}")
+            }
+            repository(url: "http://repository.activeeon.com/content/repositories/releases/") {
+                authentication(userName: "${System.getProperty('nexusUsername')}",
+                        password: "${System.getProperty('nexusPassword')}")
+            }
+        }
+    }
+}
+
+sourceSets {
+
+    integrationTest {
+        java {
+            srcDir file('src/integrationTest/java')
+            compileClasspath = sourceSets.main.output + configurations.integrationTestCompile
+            runtimeClasspath = output + compileClasspath + configurations.integrationTestRuntime
+        }
+        resources.srcDir file('src/integrationTest/resources')
+    }
 }
 
 eclipse {
@@ -110,5 +158,3 @@ task debug(group: "build", description: "Debug the IAM web application in embedd
         }
     }
 }
-
-

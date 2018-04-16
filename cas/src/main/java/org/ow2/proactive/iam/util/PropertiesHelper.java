@@ -31,10 +31,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.regex.Pattern;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 
 public class PropertiesHelper {
 
@@ -57,12 +59,11 @@ public class PropertiesHelper {
 
         if (propertiesFile != null) {
 
-        try {
+            try {
 
-            ApplicationContext appContext =
-                    new ClassPathXmlApplicationContext();
+                ApplicationContext appContext = new ClassPathXmlApplicationContext();
 
-            InputStream inputStream = appContext.getResource(propertiesFile).getInputStream();
+                InputStream inputStream = appContext.getResource(propertiesFile).getInputStream();
                 if (inputStream != null) {
                     properties.load(inputStream);
                     inputStream.close();
@@ -123,11 +124,11 @@ public class PropertiesHelper {
                 return Integer.parseInt(valueString);
             } catch (NumberFormatException e) {
                 throw new IllegalArgumentException(key +
-                        " is not an integer property. getValueAsInt cannot be called on this property");
+                                                   " is not an integer property. getValueAsInt cannot be called on this property");
             }
         } else {
             throw new IllegalArgumentException("Property " + key +
-                    " is undefined and does not declare a default value.");
+                                               " is undefined and does not declare a default value.");
         }
     }
 
@@ -148,11 +149,11 @@ public class PropertiesHelper {
                 return Long.parseLong(valueString);
             } catch (NumberFormatException e) {
                 throw new IllegalArgumentException(key +
-                        " is not an integer property. getValueAsInt cannot be called on this property");
+                                                   " is not an integer property. getValueAsInt cannot be called on this property");
             }
         } else {
             throw new IllegalArgumentException("Property " + key +
-                    " is undefined and does not declare a default value.");
+                                               " is undefined and does not declare a default value.");
         }
     }
 
@@ -178,7 +179,7 @@ public class PropertiesHelper {
      * @return the list of values of this property.
      */
     public synchronized List<String> getValueAsList(String key, PropertyType type, String separator,
-                                                    String defaultValue) {
+            String defaultValue) {
         if (type != PropertyType.LIST) {
             throw new IllegalArgumentException("Property " + key + " is not a " + PropertyType.LIST);
         }
@@ -193,7 +194,7 @@ public class PropertiesHelper {
             }
         } else {
             throw new IllegalArgumentException("Property " + key +
-                    " is undefined and does not declare a default value.");
+                                               " is undefined and does not declare a default value.");
         }
         return valueList;
     }
@@ -229,11 +230,13 @@ public class PropertiesHelper {
             throw new IllegalArgumentException("Property " + key + " is not a " + PropertyType.BOOLEAN);
         }
         String valueString = getValueAsString(key, defaultValue);
-        /*if (valueString != null) {
-            return Boolean.parseBoolean(valueString);
-        } else {
-            return false;
-        }*/
+        /*
+         * if (valueString != null) {
+         * return Boolean.parseBoolean(valueString);
+         * } else {
+         * return false;
+         * }
+         */
 
         return valueString != null && Boolean.parseBoolean(valueString);
     }
