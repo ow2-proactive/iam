@@ -84,23 +84,23 @@ repositories {
 
 dependencies {
 
-    compile "org.apereo.cas:cas-server-webapp-jetty:${project.'cas.version'}@war"
-    compile "org.apereo.cas:cas-server-webapp-init:${project.'cas.version'}"
+    compile "org.apereo.cas:cas-server-webapp-jetty:${project.'version.cas'}@war"
+    compile "org.apereo.cas:cas-server-webapp-init:${project.'version.cas'}"
 
     //CAS JSON service registry
-    compile "org.apereo.cas:cas-server-support-json-service-registry:${project.'cas.version'}"
+    compile "org.apereo.cas:cas-server-support-json-service-registry:${project.'version.cas'}"
 
     //CAS REST
-    compile "org.apereo.cas:cas-server-support-rest:${project.'cas.version'}"
+    compile "org.apereo.cas:cas-server-support-rest:${project.'version.cas'}"
 
     //CAS REST for JWT
-    compile "org.apereo.cas:cas-server-support-rest-tokens:${project.'cas.version'}"
+    compile "org.apereo.cas:cas-server-support-rest-tokens:${project.'version.cas'}"
 
     //CAS JWT
-    compile "org.apereo.cas:cas-server-support-token-tickets:${project.'cas.version'}"
+    compile "org.apereo.cas:cas-server-support-token-tickets:${project.'version.cas'}"
 
     //CAS LDAP
-    compile "org.apereo.cas:cas-server-support-ldap:${project.'cas.version'}"
+    compile "org.apereo.cas:cas-server-support-ldap:${project.'version.cas'}"
 
     // Support IAM LDAP-backend (Apache DS)
     //compile group: 'org.apache.directory.server', name: 'apacheds-all', version: '2.0.0-M24'

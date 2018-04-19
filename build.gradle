@@ -10,7 +10,7 @@ buildscript {
     dependencies {
         classpath "com.diffplug.gradle.spotless:spotless:2.4.0"
         classpath "org.ow2.proactive:coding-rules:1.0.0"
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:${project.'springboot.version'}"
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${project.'version.springboot'}"
         classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.5.0'
     }
 
@@ -29,11 +29,11 @@ subprojects {
 }
 
 task wrapper(type: Wrapper, description: "Update the Gradle wrapper") {
-    gradleVersion = project."gradle.version"
+    gradleVersion = project."version.gradle"
 }
 
 task casVersion() {
     doFirst {
-        println "${project.'cas.version'}"
+        println "${project.'version.cas'}"
     }
 }
