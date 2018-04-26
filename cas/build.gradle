@@ -16,6 +16,7 @@ version = project.iamVersion
 configurations {
     integrationTestCompile.extendsFrom testCompile
     integrationTestRuntime.extendsFrom testRuntime
+
     compile.exclude group: "org.apache.directory.api", module: "api-ldap-schema-data"
 }
 
@@ -85,6 +86,7 @@ repositories {
 dependencies {
 
     compile "org.apereo.cas:cas-server-webapp-jetty:${project.'version.cas'}@war"
+
     compile "org.apereo.cas:cas-server-webapp-init:${project.'version.cas'}"
 
     //CAS JSON service registry
@@ -100,7 +102,7 @@ dependencies {
     compile "org.apereo.cas:cas-server-support-token-tickets:${project.'version.cas'}"
 
     //CAS LDAP
-    compile "org.apereo.cas:cas-server-support-ldap:${project.'version.cas'}"
+    compile ("org.apereo.cas:cas-server-support-ldap:${project.'version.cas'}")
 
     // Support IAM LDAP-backend (Apache DS)
     //compile group: 'org.apache.directory.server', name: 'apacheds-all', version: '2.0.0-M24'
@@ -119,11 +121,6 @@ war {
     version = project.iamVersion
     includeWarJars = true
     entryCompression = ZipEntryCompression.STORED
-
-    //Remove default services from the registry
-    exclude('**/Apereo-10000002.json')
-    exclude('**/HTTPSandIMAPS-10000001.json')
-    rootSpec.exclude("**/spring-boot-devtools-1.5.8.RELEASE.jar")
 
     manifest {
         attributes 'Start-Class': 'org.ow2.proactive.iam.startup.IAMApplication'
@@ -158,4 +155,41 @@ task debug(group: "build", description: "Debug the IAM web application in embedd
     }
 }
 
+task unzipFatWar(type: Copy) {
+    def zipFile = file("${buildDir}/libs/iam-${project.iamVersion}.war")
+    def outputDir = file("${buildDir}/libs/iam")
+
+    from zipTree(zipFile)
+    into outputDir
+}
+
+task thinWar(type: War){
+    from ("${buildDir}/libs/iam")
+
+    // remove unused dependencies
+    exclude '**/WEB-INF/lib/cas-server-webapp-jetty-*.war'
+    rootSpec.exclude("**/spring-boot-devtools-*.jar")
+
+    // remove default services from the registry
+    exclude('**/Apereo-10000002.json')
+    exclude('**/HTTPSandIMAPS-10000001.json')
+
+    baseName 'iam'
+    version = project.iamVersion
+
+    manifest {
+        from "${buildDir}/libs/iam/META-INF/MANIFEST.MF"
+    }
+
+    entryCompression = ZipEntryCompression.STORED
+}
+
+task cleaning(type: Delete){
+    delete "${buildDir}/libs/iam"
+}
+
+unzipFatWar.dependsOn bootRepackage
+thinWar.dependsOn unzipFatWar
+cleaning.dependsOn thinWar
+assemble.dependsOn cleaning
 uploadArchives.dependsOn assemble

@@ -41,7 +41,7 @@
             </DefaultRolloverStrategy>
         </RollingFile>
 
-        <RollingFile name="perfFileAppender" fileName="${sys:pa.scheduler.home}/logs/perfStats.log" append="true"
+        <RollingFile name="perfFileAppender" fileName="${sys:pa.scheduler.home}/logs/iam_perfStats.log" append="true"
                      filePattern="${sys:pa.scheduler.home}/logs/logArchive/perfStats-%d{yyyy-MM-dd-HH}-%i.log">
             <PatternLayout pattern="%m%n"/>
             <Policies>
