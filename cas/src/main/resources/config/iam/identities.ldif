@@ -113,7 +113,7 @@ uid: watcher
 #pwd: watcher_pwd
 #userpassword: {SHA}0bDfjtFTW6MtWL0WRMtwu+s0lZc=
 userpassword: {SHA}zJJkLCnLFCT1MOlCVuwt/LRqxaA=
-role: watcher
+role: watchers
 objectClass: inetOrgPerson
 objectClass: organizationalPerson
 objectClass: extensibleObject
