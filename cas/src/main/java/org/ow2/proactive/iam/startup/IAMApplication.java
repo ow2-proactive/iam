@@ -30,6 +30,8 @@ import java.util.Map;
 import org.apereo.cas.CasEmbeddedContainerUtils;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.web.CasWebApplicationContext;
+
+import org.ow2.proactive.iam.configuration.PropertiesHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.Banner;
@@ -50,9 +52,12 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import org.ow2.proactive.iam.utils.SSLUtils;
 
 
 @EnableDiscoveryClient
@@ -70,7 +75,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 public class IAMApplication extends SpringBootServletInitializer {
 
-    private static final Logger logger = LoggerFactory.getLogger(IAMApplication.class);
+    private static final Logger LOG = LoggerFactory.getLogger(IAMApplication.class);
+
+    private static final String PROPERTIES_FILE = "classpath:/config/iam/iam.properties";
 
     /**
      * Main entry point of the IAM web application.
@@ -78,11 +85,21 @@ public class IAMApplication extends SpringBootServletInitializer {
      */
     public static void main(final String[] args) throws Exception {
 
+        LOG.info("Starting ProActive IAM");
+
+        LOG.info("Loading IAM configuration");
+        PropertiesHelper.loadProperties(PROPERTIES_FILE);
+
+        // Add SSL keystore to jre cacerts
+        LOG.info("Adding IAM SSL key store to the current system SSL context");
+        SSLUtils.mergeKeyStoreWithSystem();
+
         //start IAM backend (start identity backend, load identities, ..)
-        logger.info("ProActive IAM starting");
+        LOG.info("Starting identities backend");
         IAMBackend.start();
 
         // start CAS
+        LOG.info("Starting CAS server");
         final Map<String, Object> properties = CasEmbeddedContainerUtils.getRuntimeProperties(Boolean.TRUE);
         final Banner banner = CasEmbeddedContainerUtils.getCasBannerInstance();
         new SpringApplicationBuilder(IAMApplication.class).banner(banner)

@@ -15,7 +15,7 @@
     }
     /*"jwtAsServiceTicket" : {
       "@class" : "org.apereo.cas.services.DefaultRegisteredServiceProperty",
-      "values" : [ "java.util.HashSet", [ "true" ] ]
+      "values" : [ "java.utils.HashSet", [ "true" ] ]
     }*/
   },
   "publicKey" : {

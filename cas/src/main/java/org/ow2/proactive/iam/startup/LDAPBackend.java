@@ -30,7 +30,8 @@ import java.io.BufferedInputStream;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.ow2.proactive.iam.backend.embedded.ldap.EmbeddedLdapServer;
 import org.ow2.proactive.iam.backend.embedded.ldap.LdapUtil;
-import org.ow2.proactive.iam.util.PropertiesHelper;
+import org.ow2.proactive.iam.configuration.IAMConfiguration;
+import org.ow2.proactive.iam.configuration.PropertiesHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -39,9 +40,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class LDAPBackend {
 
-    private static final Logger logger = LoggerFactory.getLogger(LDAPBackend.class);
-
-    private static final String propertiesFile = "classpath:/config/iam/iam.properties";
+    private static final Logger LOG = LoggerFactory.getLogger(LDAPBackend.class);
 
     private static String host;
 
@@ -51,6 +50,8 @@ public class LDAPBackend {
 
     private static String identitiesLDIF;
 
+    private LDAPBackend(){}
+
     public static void start() throws Exception {
         loadLDAPProperties();
         startLDAPServer();
@@ -58,12 +59,12 @@ public class LDAPBackend {
     }
 
     private static void startLDAPServer() throws Exception {
-        logger.info("Starting IAM embedded LDAP server");
+        LOG.info("Starting IAM embedded LDAP server");
         EmbeddedLdapServer.INSTANCE.start(host, port);
     }
 
     private static void addIdentities() throws Exception {
-        logger.info("Loading identities");
+        LOG.info("Loading identities");
         LdapUtil ldapUtil = new LdapUtil(EmbeddedLdapServer.INSTANCE.getdirectoryService());
         ldapUtil.addRoleAttribute();
         ldapUtil.addPartition(new Dn(baseDn));
@@ -74,12 +75,11 @@ public class LDAPBackend {
     }
 
     private static void loadLDAPProperties() {
-        logger.info("Loading LDAP properties");
-        PropertiesHelper propertiesHelper = new PropertiesHelper(propertiesFile);
+        LOG.info("Setting LDAP properties");
 
-        host = propertiesHelper.getValueAsString("ldap.host", null);
-        port = propertiesHelper.getValueAsInt("ldap.port", 0);
-        baseDn = propertiesHelper.getValueAsString("dn.base", null);
-        identitiesLDIF = propertiesHelper.getValueAsString("identities.ldif", null);
+        host = PropertiesHelper.getValueAsString(IAMConfiguration.LDAP_HOST);
+        port = PropertiesHelper.getValueAsInt(IAMConfiguration.LDAP_PORT);
+        baseDn = PropertiesHelper.getValueAsString(IAMConfiguration.LDAP_DN_BASE);
+        identitiesLDIF = PropertiesHelper.getValueAsString(IAMConfiguration.LDAP_IDENTITIES_FILE);
     }
 }

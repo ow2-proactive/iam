@@ -23,7 +23,7 @@
  * If needed, contact us to obtain a release under GPL Version 2 or 3
  * or a different license than the AGPL.
  */
-package org.ow2.proactive.iam.util;
+package org.ow2.proactive.iam.configuration;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.regex.Pattern;
 
+import org.ow2.proactive.iam.exceptions.IAMException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -40,14 +41,12 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class PropertiesHelper {
 
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+    private static final Logger logger = LoggerFactory.getLogger(PropertiesHelper.class);
 
     private static Properties properties = new Properties();
 
-    private String propertiesFile;
+    private PropertiesHelper(){
 
-    public PropertiesHelper(String propertiesFile) {
-        this.propertiesFile = propertiesFile;
     }
 
     /**
@@ -55,7 +54,7 @@ public class PropertiesHelper {
      *
      * @return the properties map corresponding to the default property file.
      */
-    private Properties getProperties() {
+    public static Properties loadProperties(String propertiesFile) {
 
         if (propertiesFile != null) {
 
@@ -68,17 +67,16 @@ public class PropertiesHelper {
                     properties.load(inputStream);
                     inputStream.close();
 
-                    //properties.list(System.out);
                 } else {
                     logger.error("Unable to load properties file");
                     throw new IOException("Unable to load properties file");
                 }
 
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new IAMException(e.getMessage());
             }
         } else
-            throw new RuntimeException("Properties file not found");
+            throw new IAMException("Properties file not found");
 
         return properties;
     }
@@ -88,8 +86,8 @@ public class PropertiesHelper {
      *
      * @param value the new value to set.
      */
-    public synchronized void updateProperty(String key, String value) {
-        getProperties().setProperty(key, value);
+    public static synchronized void updateProperty(String key, String value) {
+        properties.setProperty(key, value);
     }
 
     /**
@@ -97,16 +95,16 @@ public class PropertiesHelper {
      *
      * @return true if this property is set, false otherwise.
      */
-    public synchronized boolean isSet(String key, String defaultValue) {
-        return defaultValue != null || getProperties().containsKey(key);
+    public static synchronized boolean isSet(String key, String defaultValue) {
+        return defaultValue != null || properties.containsKey(key);
     }
 
     /**
      * unsets this property
      *
      */
-    public synchronized void unSet(String key) {
-        getProperties().remove(key);
+    public static synchronized void unSet(String key) {
+        properties.remove(key);
     }
 
     /**
@@ -115,20 +113,20 @@ public class PropertiesHelper {
      *
      * @return the value of this property.
      */
-    public synchronized int getValueAsInt(String key, int defaultValue) {
+    public static synchronized int getValueAsInt(String key) {
 
-        String valueString = getValueAsString(key, String.valueOf(defaultValue));
+        String valueString = getValueAsString(key);
 
         if (valueString != null) {
             try {
                 return Integer.parseInt(valueString);
             } catch (NumberFormatException e) {
                 throw new IllegalArgumentException(key +
-                                                   " is not an integer property. getValueAsInt cannot be called on this property");
+                                                   " is not an integer property");
             }
         } else {
-            throw new IllegalArgumentException("Property " + key +
-                                               " is undefined and does not declare a default value.");
+            throw new IllegalArgumentException(key +
+                                               " is undefined.");
         }
     }
 
@@ -138,22 +136,22 @@ public class PropertiesHelper {
      *
      * @return the value of this property.
      */
-    public synchronized long getValueAsLong(String key, PropertyType type, String defaultValue) {
+    public static synchronized long getValueAsLong(String key, PropertyType type) {
         if (type != PropertyType.INTEGER) {
-            throw new IllegalArgumentException("Property " + key + " is not a " + PropertyType.INTEGER);
+            throw new IllegalArgumentException(key + " is not a long integer");
         }
-        String valueString = getValueAsString(key, defaultValue);
+        String valueString = getValueAsString(key);
 
         if (valueString != null) {
             try {
                 return Long.parseLong(valueString);
             } catch (NumberFormatException e) {
                 throw new IllegalArgumentException(key +
-                                                   " is not an integer property. getValueAsInt cannot be called on this property");
+                                                   " is not a long integer property");
             }
         } else {
-            throw new IllegalArgumentException("Property " + key +
-                                               " is undefined and does not declare a default value.");
+            throw new IllegalArgumentException(key +
+                                               " does not exist.");
         }
     }
 
@@ -162,28 +160,21 @@ public class PropertiesHelper {
      *
      * @return the value of this property.
      */
-    public synchronized String getValueAsString(String key, String defaultValue) {
-        Properties prop = getProperties();
-        if (prop.containsKey(key)) {
-            return prop.getProperty(key);
-        } else {
-            return defaultValue;
-        }
+    public static synchronized String getValueAsString(String key) {
+            return properties.getProperty(key);
     }
 
     /**
      * Returns the value of this property as a List of strings.
      *
      * @param separator the separator to use
-     *
      * @return the list of values of this property.
      */
-    public synchronized List<String> getValueAsList(String key, PropertyType type, String separator,
-            String defaultValue) {
+    public static synchronized List<String> getValueAsList(String key, PropertyType type, String separator) {
         if (type != PropertyType.LIST) {
-            throw new IllegalArgumentException("Property " + key + " is not a " + PropertyType.LIST);
+            throw new IllegalArgumentException(key + " is not a list");
         }
-        String valueString = getValueAsString(key, defaultValue);
+        String valueString = getValueAsString(key);
         ArrayList<String> valueList = new ArrayList<>();
         if (valueString != null) {
             for (String val : valueString.split(Pattern.quote(separator))) {
@@ -193,8 +184,7 @@ public class PropertiesHelper {
                 }
             }
         } else {
-            throw new IllegalArgumentException("Property " + key +
-                                               " is undefined and does not declare a default value.");
+            throw new IllegalArgumentException(key + " is not defined.");
         }
         return valueList;
     }
@@ -205,10 +195,9 @@ public class PropertiesHelper {
      *
      * @return the value of this property.
      */
-    public synchronized String getValueAsStringOrNull(String key) {
-        Properties prop = getProperties();
-        if (prop.containsKey(key)) {
-            String ret = prop.getProperty(key);
+    public static synchronized String getValueAsStringOrNull(String key) {
+        if (properties.containsKey(key)) {
+            String ret = properties.getProperty(key);
             if ("".equals(ret)) {
                 return null;
             }
@@ -225,18 +214,11 @@ public class PropertiesHelper {
      *
      * @return the value of this property.
      */
-    public synchronized boolean getValueAsBoolean(String key, PropertyType type, String defaultValue) {
+    public static synchronized boolean getValueAsBoolean(String key, PropertyType type) {
         if (type != PropertyType.BOOLEAN) {
-            throw new IllegalArgumentException("Property " + key + " is not a " + PropertyType.BOOLEAN);
+            throw new IllegalArgumentException(key + " is not a boolean");
         }
-        String valueString = getValueAsString(key, defaultValue);
-        /*
-         * if (valueString != null) {
-         * return Boolean.parseBoolean(valueString);
-         * } else {
-         * return false;
-         * }
-         */
+        String valueString = getValueAsString(key);
 
         return valueString != null && Boolean.parseBoolean(valueString);
     }
