@@ -26,6 +26,7 @@
 package org.ow2.proactive.iam.backend.embedded.ldap;
 
 import java.io.IOException;
+import java.util.Random;
 
 import javax.naming.NamingException;
 
@@ -44,17 +45,17 @@ public enum EmbeddedLdapServer {
     //singleton instance of EmbeddedLDAPServer
     INSTANCE;
 
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+    private static final Logger logger = LoggerFactory.getLogger(EmbeddedLdapServer.class);
 
-    private static final String INSTANCE_NAME = "ProActiveEmbeddedLDAP";
+    private static final String INSTANCE_NAME = "ProActiveEmbeddedLDAP-"+ new Random().nextInt();
 
-    private static final String INSTANCE_PATH = "/tmp/ProActiveEmbeddedLDAP";
+    private static final String INSTANCE_PATH = System.getProperty("java.io.tmpdir")+System.getProperty("file.separator")+INSTANCE_NAME;
 
     private static DirectoryService directoryService;
 
     private static LdapServer ldapServer = new LdapServer();
 
-    private void init(String host, Integer port) {
+    private static void init(String host, Integer port) {
 
         try {
             DefaultDirectoryServiceFactory factory = new DefaultDirectoryServiceFactory();

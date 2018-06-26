@@ -35,13 +35,14 @@ import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.schema.MutableAttributeType;
 import org.apache.directory.server.core.api.DirectoryService;
 import org.apache.directory.server.core.partition.impl.avl.AvlPartition;
+import org.ow2.proactive.iam.exceptions.IAMException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
 public class LdapUtil {
 
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+    private static final Logger LOG = LoggerFactory.getLogger(LdapUtil.class);
 
     private DirectoryService directoryService;
 
@@ -49,7 +50,7 @@ public class LdapUtil {
         if (directoryService.isStarted())
             this.directoryService = directoryService;
         else
-            throw new RuntimeException("Directory service is not started");
+            throw new IAMException("Embedded LDAP Directory service is not started");
     }
 
     public void addRoleAttribute() throws LdapException {
@@ -61,7 +62,8 @@ public class LdapUtil {
         roleAttributeType.setEnabled(true);
 
         directoryService.getSchemaManager().add(roleAttributeType);
-        logger.debug("Atrribute type 'role' added to LDAP schema");
+
+        LOG.debug("Atrribute type 'role' added to LDAP schema");
     }
 
     public void addPartition(Dn dn) throws Exception {
@@ -70,60 +72,22 @@ public class LdapUtil {
         partition.setId(dn.getName());
         partition.setSuffixDn(dn);
         directoryService.addPartition(partition);
-        logger.debug("Partition '" + dn.toString() + "' added to LDAP schema");
+
+        LOG.debug("Partition added to LDAP schema");
+
     }
 
     public void importLdif(BufferedInputStream ldifStream) {
 
         try (LdifReader ldifReader = new LdifReader(ldifStream)) {
             for (LdifEntry ldifEntry : ldifReader) {
-                //checkPartition(directoryService,ldifEntry);
+
                 directoryService.getAdminSession()
                                 .add(new DefaultEntry(directoryService.getSchemaManager(), ldifEntry.getEntry()));
             }
-            logger.info("Identities added to LDAP server");
+            LOG.info("Identities added to LDAP server");
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            LOG.error(e.getMessage());
         }
     }
-
-    /*
-     * private void checkPartition(DirectoryService directoryService, LdifEntry ldifEntry) throws
-     * Exception {
-     * 
-     * Dn dn = ldifEntry.getDn();
-     * Dn parent = dn.getParent();
-     * 
-     * try {
-     * directoryService.getAdminSession().exists(parent);
-     * } catch (Exception e) {
-     * 
-     * AvlPartition partition = new AvlPartition(directoryService.getSchemaManager());
-     * partition.setId(dn.getName());
-     * partition.setSuffixDn(dn);
-     * directoryService.addPartition(partition);
-     * }
-     * }
-     */
-
-    /*
-     * public void applyLdif(final File ldifFile) throws Exception {
-     * new LdifFileLoader(directoryService.getAdminSession(), ldifFile, null)
-     * .execute();
-     * }
-     * 
-     * public void createEntry(final String id,
-     * final Map<String, String[]> attributes) throws LdapException,
-     * LdapInvalidDnException {
-     * 
-     * Dn dn = new Dn(directoryService.getSchemaManager(), id);
-     * if (!directoryService.getAdminSession().exists(dn)) {
-     * Entry entry = directoryService.newEntry(dn);
-     * for (String attributeId : attributes.keySet()) {
-     * entry.add(attributeId, attributes.get(attributeId));
-     * }
-     * directoryService.getAdminSession().add(entry);
-     * }
-     * }
-     */
 }
