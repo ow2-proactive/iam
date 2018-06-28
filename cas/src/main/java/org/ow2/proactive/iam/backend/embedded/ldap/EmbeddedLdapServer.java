@@ -25,6 +25,7 @@
  */
 package org.ow2.proactive.iam.backend.embedded.ldap;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Random;
 
@@ -49,7 +50,7 @@ public enum EmbeddedLdapServer {
 
     private static final String INSTANCE_NAME = "ProActiveEmbeddedLDAP-"+ new Random().nextInt();
 
-    private static final String INSTANCE_PATH = System.getProperty("java.io.tmpdir")+System.getProperty("file.separator")+INSTANCE_NAME;
+    private static final String INSTANCE_PATH = System.getProperty("java.io.tmpdir")+ File.separator+INSTANCE_NAME;
 
     private static DirectoryService directoryService;
 
