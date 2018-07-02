@@ -122,8 +122,8 @@ dn: uid=demo,ou=users,dc=activeeon,dc=com
 cn: demo
 sn: demo
 uid: demo
-#pwd: pwd
-userpassword: {SHA}N/omUzCtg+qoee+x4ttjgIls9jk=
+#pwd: demo
+userpassword: {SHA}ieSV55Qc+eQOaYDRSha/AjzNTJE=
 role: admin
 objectClass: inetOrgPerson
 objectClass: organizationalPerson
