@@ -59,7 +59,7 @@ sn: Admin
 uid: admin
 #pwd: admin
 userpassword: {SHA}0DPiKuNIrrVmD8IUCuw1hQxNqZc=
-role: admin
+role: admin, nsadmins
 objectClass: inetOrgPerson
 objectClass: organizationalPerson
 objectClass: extensibleObject
@@ -72,7 +72,7 @@ sn: rm
 uid: rm
 #pwd: rm_pwd
 userpassword: {SHA}Dkru1UG0cZwT8kTzYTpo1JdNzjY=
-role: admin
+role: admin, nsadmins
 objectClass: inetOrgPerson
 objectClass: organizationalPerson
 objectClass: extensibleObject
@@ -98,7 +98,7 @@ sn: radmin
 uid: radmin
 #pwd: pwd
 userpassword: {SHA}N/omUzCtg+qoee+x4ttjgIls9jk=
-role: admin
+role: rmcoreadmins
 objectClass: inetOrgPerson
 objectClass: organizationalPerson
 objectClass: extensibleObject
@@ -111,7 +111,7 @@ sn: nsadmin
 uid: nsadmin
 #pwd: pwd
 userpassword: {SHA}N/omUzCtg+qoee+x4ttjgIls9jk=
-role: admin
+role: nsadmins
 objectClass: inetOrgPerson
 objectClass: organizationalPerson
 objectClass: extensibleObject
@@ -190,7 +190,7 @@ sn: provider
 uid: provider
 #pwd: pwd
 userpassword: {SHA}N/omUzCtg+qoee+x4ttjgIls9jk=
-role: admin
+role: providers
 objectClass: inetOrgPerson
 objectClass: organizationalPerson
 objectClass: extensibleObject
@@ -213,11 +213,8 @@ cn: admin
 description: ProActive user role
 objectclass: groupofnames
 member: uid=rm,ou=users,dc=activeeon,dc=com
-#member: uid=scheduler,ou=users,dc=activeeon,dc=com
-member: uid=nsadmin,ou=users,dc=activeeon,dc=com
 member: uid=radmin,ou=users,dc=activeeon,dc=com
 member: uid=admin,ou=users,dc=activeeon,dc=com
-member: uid=test_executor,ou=users,dc=activeeon,dc=com
 member: uid=demo,ou=users,dc=activeeon,dc=com
 
 # proactive nsadmins role
