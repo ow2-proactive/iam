@@ -29,13 +29,9 @@ public class IAMConfiguration {
 
     public static final String BACKEND = "iam.backend";
 
-    public static final String SSL_CONTEXT="iam.ssl.context";
+    public static final String SSL_CERTTIFICATE = "server.ssl.key-store";
 
-    public static final String SSL_CERTTIFICATE = "iam.ssl.certificate.file";
-
-    public static final String SSL_CERTTIFICATE_PASS="iam.ssl.certificate.password";
-
-    public static final String SSL_X5098ALGORITHM="iam.ssl.X509.algorithm";
+    public static final String SSL_CERTTIFICATE_PASS="server.ssl.key-store-password";
 
     public static final String LDAP_HOST = "iam.ldap.host";
 

@@ -26,6 +26,7 @@
 package org.ow2.proactive.iam.backend.embedded.ldap;
 
 import java.io.BufferedInputStream;
+import java.io.File;
 
 import org.apache.directory.api.ldap.model.entry.DefaultEntry;
 import org.apache.directory.api.ldap.model.exception.LdapException;
@@ -40,13 +41,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class LdapUtil {
+public class LdapUtils {
 
-    private static final Logger LOG = LoggerFactory.getLogger(LdapUtil.class);
+    private static final Logger LOG = LoggerFactory.getLogger(LdapUtils.class);
 
     private DirectoryService directoryService;
 
-    public LdapUtil(DirectoryService directoryService) {
+    public LdapUtils(DirectoryService directoryService) {
         if (directoryService.isStarted())
             this.directoryService = directoryService;
         else
@@ -84,6 +85,20 @@ public class LdapUtil {
 
                 directoryService.getAdminSession()
                                 .add(new DefaultEntry(directoryService.getSchemaManager(), ldifEntry.getEntry()));
+            }
+            LOG.info("Identities added to LDAP server");
+        } catch (Exception e) {
+            LOG.error(e.getMessage());
+        }
+    }
+
+    public void importLdif(File ldifFile) {
+
+        try (LdifReader ldifReader = new LdifReader(ldifFile)) {
+            for (LdifEntry ldifEntry : ldifReader) {
+
+                directoryService.getAdminSession()
+                        .add(new DefaultEntry(directoryService.getSchemaManager(), ldifEntry.getEntry()));
             }
             LOG.info("Identities added to LDAP server");
         } catch (Exception e) {

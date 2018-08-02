@@ -29,9 +29,6 @@ import com.oneandone.compositejks.CompositeX509KeyManager;
 import com.oneandone.compositejks.CompositeX509TrustManager;
 import com.oneandone.compositejks.KeyStoreLoader;
 import com.oneandone.compositejks.SslContextUtils;
-import org.ow2.proactive.iam.configuration.IAMConfiguration;
-import org.ow2.proactive.iam.configuration.PropertiesHelper;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.net.ssl.*;
@@ -45,15 +42,8 @@ import java.security.KeyStore;
  */
 public final class SSLUtils {
 
-    /**
-     * The key manager algorithm to use for X509. May need to modify this when using a non-Oracle JDK.
-     */
-    private static String x509Algorithm = PropertiesHelper.getValueAsString(IAMConfiguration.SSL_X5098ALGORITHM);
-    private static String certificateFile = PropertiesHelper.getValueAsString(IAMConfiguration.SSL_CERTTIFICATE);
-    private static String certificatePassword = PropertiesHelper.getValueAsString(IAMConfiguration.SSL_CERTTIFICATE_PASS);
-    private static String sslContext = PropertiesHelper.getValueAsString(IAMConfiguration.SSL_CONTEXT);
-
-    private static ApplicationContext appContext = new ClassPathXmlApplicationContext();
+    private static final String X509_ALGORITHM = "SunX509";
+    private static final String SSL_CONTEXT = "SSL";
 
     private SSLUtils() {
     }
@@ -64,9 +54,14 @@ public final class SSLUtils {
      *
      * @throws GeneralSecurityException, IOException
      */
-    public static void mergeKeyStoreWithSystem() throws GeneralSecurityException, IOException {
-        InputStream keyStoreStream = appContext.getResource(certificateFile).getInputStream();
-        SSLContext.setDefault(buildMergedWithSystem(KeyStoreLoader.fromStream(keyStoreStream),certificatePassword));
+    public static void mergeKeyStoreWithSystem(String certificatePath, String certificatePassword) throws GeneralSecurityException, IOException {
+
+        if (certificatePath.startsWith("classpath")) {
+            InputStream keyStoreStream = new ClassPathXmlApplicationContext().getResource(certificatePath).getInputStream();
+            SSLContext.setDefault(buildMergedWithSystem(KeyStoreLoader.fromStream(keyStoreStream), certificatePassword));
+        } else {
+            SSLContext.setDefault(buildMergedWithSystem(KeyStoreLoader.fromFile(certificatePath), certificatePassword));
+        }
     }
 
     /**
@@ -80,15 +75,15 @@ public final class SSLUtils {
     private static SSLContext buildMergedWithSystem(KeyStore keyStore, String password) throws GeneralSecurityException {
         String defaultAlgorithm = KeyManagerFactory.getDefaultAlgorithm();
 
-        KeyManager[] keyManagers = { new CompositeX509KeyManager(SslContextUtils.getSystemKeyManager(x509Algorithm,
+        KeyManager[] keyManagers = { new CompositeX509KeyManager(SslContextUtils.getSystemKeyManager(X509_ALGORITHM,
                                                                                      keyStore,
                 password.toCharArray()),
                 SslContextUtils.getSystemKeyManager(defaultAlgorithm, null, null)) };
 
-        TrustManager[] trustManagers = { new CompositeX509TrustManager(SslContextUtils.getSystemTrustManager(x509Algorithm, keyStore),
+        TrustManager[] trustManagers = { new CompositeX509TrustManager(SslContextUtils.getSystemTrustManager(X509_ALGORITHM, keyStore),
                 SslContextUtils.getSystemTrustManager(defaultAlgorithm, null)) };
 
-        SSLContext context = SSLContext.getInstance(sslContext);
+        SSLContext context = SSLContext.getInstance(SSL_CONTEXT);
         context.init(keyManagers, trustManagers, null);
         return context;
     }

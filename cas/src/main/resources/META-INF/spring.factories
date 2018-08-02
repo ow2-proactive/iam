@@ -1,2 +1,5 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=
+# Application Listeners
+org.springframework.context.ApplicationListener=org.ow2.proactive.iam.startup.StartupListener
+
 

@@ -73,7 +73,8 @@ idea {
 }
 
 springBoot {
-    mainClass = "org.ow2.proactive.iam.startup.IAMApplication"
+    //mainClass = "org.ow2.proactive.iam.startup.IAMApplication"
+    mainClass = "org.apereo.cas.web.CasWebApplication"
 }
 
 repositories {
@@ -85,23 +86,25 @@ repositories {
 
 dependencies {
 
+    // Use Jetty as web app server
     compile "org.apereo.cas:cas-server-webapp-jetty:${project.'version.cas'}@war"
 
+    // CAS Web App
     compile "org.apereo.cas:cas-server-webapp-init:${project.'version.cas'}"
 
-    //CAS JSON service registry
+    // CAS JSON service registry
     compile "org.apereo.cas:cas-server-support-json-service-registry:${project.'version.cas'}"
 
-    //CAS REST
+    // CAS REST
     compile "org.apereo.cas:cas-server-support-rest:${project.'version.cas'}"
 
-    //CAS REST for JWT
+    // CAS REST for JWT
     compile "org.apereo.cas:cas-server-support-rest-tokens:${project.'version.cas'}"
 
-    //CAS JWT
+    // CAS JWT
     compile "org.apereo.cas:cas-server-support-token-tickets:${project.'version.cas'}"
 
-    //CAS LDAP
+    // CAS LDAP
     compile ("org.apereo.cas:cas-server-support-ldap:${project.'version.cas'}")
 
     // Support IAM LDAP-backend (Apache DS)
@@ -115,8 +118,11 @@ dependencies {
     //  To support SpringBootServletInitializer (when IAM is deployed as a traditional WAR file)
     compile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0'
 
+    // To load IAM certificate into the keystore of the running java system (i.e., the underlying jvm)
     compile group: 'com.oneandone', name: 'composite-jks', version: '1.0'
 
+    // To delegate authentication to a SAML v2 Identity Provider (IDP)
+    compile "org.apereo.cas:cas-server-support-pac4j-webflow:${project.'version.cas'}"
 }
 
 war {
@@ -126,7 +132,8 @@ war {
     entryCompression = ZipEntryCompression.STORED
 
     manifest {
-        attributes 'Start-Class': 'org.ow2.proactive.iam.startup.IAMApplication'
+        //attributes 'Start-Class': 'org.ow2.proactive.iam.startup.IAMApplication'
+        attributes 'Start-Class': 'org.apereo.cas.web.CasWebApplication'
     }
 }
 
@@ -164,14 +171,41 @@ task unzipFatWar(type: Copy) {
 
     from zipTree(zipFile)
     into outputDir
+
+    rename ('application.properties', 'application-default.properties')
 }
 
 task thinWar(type: War){
     from ("${buildDir}/libs/iam")
 
     // remove unused dependencies
-    exclude '**/WEB-INF/lib/cas-server-webapp-jetty-*.war'
+    exclude('**/WEB-INF/lib/cas-server-webapp-jetty-*.war')
+
+    rootSpec.exclude("**/groovy*-2.4.12.jar")
+    rootSpec.exclude("**/log4j-*-2.9.1.jar")
+    rootSpec.exclude("**/commons-codec-1.10.jar")
+    rootSpec.exclude("**/commons-pool2-2.4.3.jar")
+    rootSpec.exclude("**/hibernate-*-5.2.13.Final.jar")
+    rootSpec.exclude("**/hibernate-validator-5.3.6.Final.jar")
+    rootSpec.exclude("**/HikariCP-2.7.7.jar")
+    rootSpec.exclude("**/httpcore-4.4.8.jar")
+    rootSpec.exclude("**/jackson-*-2.9.0.jar")
+    rootSpec.exclude("**/javassist-3.21.0-GA.jar")
+    rootSpec.exclude("**/okhttp-2.7.5.jar")
+
     rootSpec.exclude("**/spring-boot-devtools-*.jar")
+    rootSpec.exclude("**/spring-*-4.3.16.RELEASE.jar")
+    //rootSpec.exclude("**/spring-boot*-1.5.12.RELEASE.jar")
+    rootSpec.exclude("**/spring-integration-*-4.3.15.RELEASE.jar")
+    rootSpec.exclude("**/spring-data-*-1.13.7.RELEASE.jar")
+    rootSpec.exclude("**/spring-data-*-1.10.7.RELEASE.jar")
+    rootSpec.exclude("**/spring-security-*-4.2.5.RELEASE.jar")
+
+
+    // remove unused properties files
+    rootSpec.exclude("**/application.properties")
+    rootSpec.exclude("**/bootstrap.properties")
+    rootSpec.exclude("**/application.yml")
 
     // remove default services from the registry
     exclude('**/Apereo-10000002.json')
