@@ -63,6 +63,7 @@ When using the proactive profile, IAM uses the configuration file indicated by t
 * Further credentials can be found in the file `src/main/resources/config/iam/identities.ldif` (under the `cas` module).
 
 ## Customize the configuration properties
+
 You can edit and change one or more properties of your choice, For instance:
 
 * iam.ldap.host=localhost_or_$hostname
@@ -89,6 +90,7 @@ N.B. keep a blank line before and after this block (as for the other users)
 * Check that the ports you chosen are not used. In linux, you can use 'lsof -i :port' and in Windows 'netstat -a -n -o | findstr :port'. These commands return nothing when the port is not used.
 
 ## Change the SSL Certificate
+
 IAM uses a SSL certificate to secure its communications. The default certificate is located under `src/main/resources/config/iam/cas/keystore` (under the `cas` module). To generate a new certificate, use this command:
 
 ```bash
