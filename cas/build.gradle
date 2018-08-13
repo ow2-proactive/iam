@@ -119,9 +119,6 @@ dependencies {
 
     // To load IAM certificate into the keystore of the running java system (i.e., the underlying jvm)
     compile group: 'com.oneandone', name: 'composite-jks', version: '1.0'
-
-    // To delegate authentication to a SAML v2 Identity Provider (IDP)
-    compile "org.apereo.cas:cas-server-support-pac4j-webflow:${project.'version.cas'}"
 }
 
 war {
