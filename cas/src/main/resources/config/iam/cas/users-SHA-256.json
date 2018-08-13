@@ -123,7 +123,7 @@
   },
   "watcher" : {
     "@class" : "org.apereo.cas.adaptors.generic.CasUserAccount",
-    "password" : "6a78e36d0a23d91b8786c34e7a7a54b2d57142896f0583814265ec98cf443986",
+    "password" : "7b3a14bbc93a55cef6d46833d1fd88b530ec8275886c1b9aa5aec16f83614513",
     "attributes" : {
       "@class" : "java.util.LinkedHashMap",
       "cn" : "watcher",
