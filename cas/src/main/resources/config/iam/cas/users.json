@@ -1,0 +1,146 @@
+{
+  "@class" : "java.util.LinkedHashMap",
+  "tobias" : {
+    "@class" : "org.apereo.cas.adaptors.generic.CasUserAccount",
+    "password" : "tobias",
+    "attributes" : {
+      "@class" : "java.util.LinkedHashMap",
+      "cn" : "Tobias Wiens",
+      "role" : "user"
+    },
+    "status" : "OK",
+    "expirationDate" : "2019-12-31"
+  },
+  "user" : {
+    "@class" : "org.apereo.cas.adaptors.generic.CasUserAccount",
+    "password" : "user",
+    "attributes" : {
+      "@class" : "java.util.LinkedHashMap",
+      "cn" : "user",
+      "role" : "user"
+    },
+    "status" : "OK",
+    "expirationDate" : "2019-12-31"
+  },
+  "admin" : {
+    "@class" : "org.apereo.cas.adaptors.generic.CasUserAccount",
+    "password" : "admin",
+    "attributes" : {
+      "@class" : "java.util.LinkedHashMap",
+      "cn" : "admin",
+      "role" : "admin, nsadmins"
+    },
+    "status" : "OK",
+    "expirationDate" : "2019-12-31"
+  },
+  "rm" : {
+    "@class" : "org.apereo.cas.adaptors.generic.CasUserAccount",
+    "password" : "rm_pwd",
+    "attributes" : {
+      "@class" : "java.util.LinkedHashMap",
+      "cn" : "rm",
+      "role" : "admin, nsadmins"
+    },
+    "status" : "OK",
+    "expirationDate" : "2019-12-31"
+  },
+  "scheduler" : {
+    "@class" : "org.apereo.cas.adaptors.generic.CasUserAccount",
+    "password" : "scheduler_pwd",
+    "attributes" : {
+      "@class" : "java.util.LinkedHashMap",
+      "cn" : "scheduler",
+      "role" : "user"
+    },
+    "status" : "OK",
+    "expirationDate" : "2019-12-31"
+  },
+  "radmin" : {
+    "@class" : "org.apereo.cas.adaptors.generic.CasUserAccount",
+    "password" : "pwd",
+    "attributes" : {
+      "@class" : "java.util.LinkedHashMap",
+      "cn" : "radmin",
+      "role" : "rmcoreadmins"
+    },
+    "status" : "OK",
+    "expirationDate" : "2019-12-31"
+  },
+  "nsadmin" : {
+    "@class" : "org.apereo.cas.adaptors.generic.CasUserAccount",
+    "password" : "pwd",
+    "attributes" : {
+      "@class" : "java.util.LinkedHashMap",
+      "cn" : "nsadmin",
+      "role" : "nsadmins"
+    },
+    "status" : "OK",
+    "expirationDate" : "2019-12-31"
+  },
+  "demo" : {
+    "@class" : "org.apereo.cas.adaptors.generic.CasUserAccount",
+    "password" : "demo",
+    "attributes" : {
+      "@class" : "java.util.LinkedHashMap",
+      "cn" : "demo",
+      "role" : "admin"
+    },
+    "status" : "OK",
+    "expirationDate" : "2019-12-31"
+  },
+  "guest" : {
+    "@class" : "org.apereo.cas.adaptors.generic.CasUserAccount",
+    "password" : "pwd",
+    "attributes" : {
+      "@class" : "java.util.LinkedHashMap",
+      "cn" : "guest",
+      "role" : "guests"
+    },
+    "status" : "OK",
+    "expirationDate" : "2019-12-31"
+  },
+  "test_executor" : {
+    "@class" : "org.apereo.cas.adaptors.generic.CasUserAccount",
+    "password" : "pwd",
+    "attributes" : {
+      "@class" : "java.util.LinkedHashMap",
+      "cn" : "test_executor",
+      "role" : "admin"
+    },
+    "status" : "OK",
+    "expirationDate" : "2019-12-31"
+  },
+  "test" : {
+    "@class" : "org.apereo.cas.adaptors.generic.CasUserAccount",
+    "password" : "pwd",
+    "attributes" : {
+      "@class" : "java.util.LinkedHashMap",
+      "cn" : "test",
+      "role" : ""
+    },
+    "status" : "OK",
+    "expirationDate" : "2019-12-31"
+  },
+  "watcher" : {
+    "@class" : "org.apereo.cas.adaptors.generic.CasUserAccount",
+    "password" : "watcher_pwd",
+    "attributes" : {
+      "@class" : "java.util.LinkedHashMap",
+      "cn" : "watcher",
+      "role" : "watchers"
+    },
+    "status" : "OK",
+    "expirationDate" : "2019-12-31"
+  },
+  "provider" : {
+    "@class" : "org.apereo.cas.adaptors.generic.CasUserAccount",
+    "password" : "pwd",
+    "attributes" : {
+      "@class" : "java.util.LinkedHashMap",
+      "cn" : "provider",
+      "role" : "providers"
+    },
+    "status" : "OK",
+    "expirationDate" : "2019-12-31"
+  }
+}

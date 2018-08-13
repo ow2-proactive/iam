@@ -73,7 +73,6 @@ idea {
 }
 
 springBoot {
-    //mainClass = "org.ow2.proactive.iam.startup.IAMApplication"
     mainClass = "org.apereo.cas.web.CasWebApplication"
 }
 
@@ -103,6 +102,9 @@ dependencies {
 
     // CAS JWT
     compile "org.apereo.cas:cas-server-support-token-tickets:${project.'version.cas'}"
+
+    // CAS File-based authentication
+    compile "org.apereo.cas:cas-server-support-generic:${project.'version.cas'}"
 
     // CAS LDAP
     compile ("org.apereo.cas:cas-server-support-ldap:${project.'version.cas'}")
@@ -200,7 +202,6 @@ task thinWar(type: War){
     rootSpec.exclude("**/spring-data-*-1.13.7.RELEASE.jar")
     rootSpec.exclude("**/spring-data-*-1.10.7.RELEASE.jar")
     rootSpec.exclude("**/spring-security-*-4.2.5.RELEASE.jar")
-
 
     // remove unused properties files
     rootSpec.exclude("**/application.properties")

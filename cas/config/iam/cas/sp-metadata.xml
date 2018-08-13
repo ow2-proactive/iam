@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?><md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" ID="_1dbqdvppovjjesqlqwouztjipr4lzgle4qpolex" entityID="urn:mace:saml:pac4j.org" validUntil="2038-08-07T16:30:02.000Z">
+    <md:Extensions xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport">
+        <alg:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/>
+        <alg:DigestMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#sha384"/>
+        <alg:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+        <alg:DigestMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#sha224"/>
+        <alg:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+        <alg:DigestMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/>
+        <alg:DigestMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha384"/>
+        <alg:DigestMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
+        <alg:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+        <alg:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#dsa-sha1"/>
+    </md:Extensions>
+    <md:SPSSODescriptor AuthnRequestsSigned="false" WantAssertionsSigned="false" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol urn:oasis:names:tc:SAML:1.0:protocol urn:oasis:names:tc:SAML:1.1:protocol">
+        <md:Extensions xmlns:init="urn:oasis:names:tc:SAML:profiles:SSO:request-init">
+            <init:RequestInitiator Binding="urn:oasis:names:tc:SAML:profiles:SSO:request-init" Location="https://localhost:8444/iam/login?client_name=SAML2Client"/>
+        </md:Extensions>
+        <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</md:NameIDFormat>
+        <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</md:NameIDFormat>
+        <md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress</md:NameIDFormat>
+        <md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified</md:NameIDFormat>
+        <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://localhost:8444/iam/login?client_name=SAML2Client" index="0"/>
+    </md:SPSSODescriptor>
+</md:EntityDescriptor>
