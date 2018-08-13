@@ -105,18 +105,7 @@ dependencies {
 
     // CAS File-based authentication
     compile "org.apereo.cas:cas-server-support-generic:${project.'version.cas'}"
-
-    // CAS LDAP
-    compile ("org.apereo.cas:cas-server-support-ldap:${project.'version.cas'}")
-
-    // Support IAM LDAP-backend (Apache DS)
-    //compile group: 'org.apache.directory.server', name: 'apacheds-all', version: '2.0.0-M24'
-    compile group: 'org.apache.directory.api', name: 'api-all', version: '1.0.0'
-    compile group: 'org.apache.directory.server', name: 'apacheds-core-api', version: '2.0.0-M24'
-    compile group: 'org.apache.directory.server', name: 'apacheds-protocol-shared', version: '2.0.0-M24'
-    compile group: 'org.apache.directory.server', name: 'apacheds-core-annotations', version: '2.0.0-M24'
-    compile group: 'org.apache.directory.server', name: 'apacheds-protocol-ldap', version: '2.0.0-M24'
-
+    
     //  To support SpringBootServletInitializer (when IAM is deployed as a traditional WAR file)
     compile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0'
 

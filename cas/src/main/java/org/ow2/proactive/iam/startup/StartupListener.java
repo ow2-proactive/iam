@@ -1,7 +1,6 @@
 package org.ow2.proactive.iam.startup;
 
 import org.jasig.cas.client.util.CommonUtils;
-import org.ow2.proactive.iam.backend.embedded.ldap.LdapBackend;
 import org.ow2.proactive.iam.configuration.IAMConfiguration;
 import org.ow2.proactive.iam.exceptions.IAMException;
 import org.ow2.proactive.iam.utils.SSLUtils;
@@ -19,8 +18,6 @@ public class StartupListener implements ApplicationListener<ApplicationEvent> {
 
     private static final String PA_HOME_PROPERTY = "pa.scheduler.home";
     private static final String PA_HOME_PLACEHOLDER = "${pa.scheduler.home}";
-
-    private static final String EMBEDDED_LDAP = "embeddedLDAP";
 
     private static boolean listenerFired = false;
 
@@ -41,9 +38,6 @@ public class StartupListener implements ApplicationListener<ApplicationEvent> {
 
                     // Add SSL keystore to jre cacerts
                     configureSSL(source);
-
-                    //start IAM backend (start identity backend, load identities, ..)
-                    startIdentitiesBackend(source);
 
                     listenerFired = true;
                 }
@@ -66,35 +60,6 @@ public class StartupListener implements ApplicationListener<ApplicationEvent> {
 
         } catch (Exception e){
             throw new IAMException("IAM startup error: SSL certificate cannot be added to the JVM truststore",e);
-        }
-    }
-
-
-    private static void startIdentitiesBackend(PropertySource<?> source){
-
-        LOG.info("Starting identities backend");
-
-        if (source.getProperty(IAMConfiguration.BACKEND).equals(EMBEDDED_LDAP)) {
-            LOG.info("IAM is configured to use an embedded LDAP backend");
-
-            if (source.containsProperty(IAMConfiguration.LDAP_HOST) &&
-                    source.containsProperty(IAMConfiguration.LDAP_PORT) &&
-                            source.containsProperty(IAMConfiguration.LDAP_DN_BASE) &&
-                                source.containsProperty(IAMConfiguration.LDAP_IDENTITIES_FILE)) {
-
-                String ldapHost = (String)source.getProperty(IAMConfiguration.LDAP_HOST);
-                int ldapPort = Integer.parseInt((String)source.getProperty(IAMConfiguration.LDAP_PORT));
-                String ldapBaseDn = (String)source.getProperty(IAMConfiguration.LDAP_DN_BASE);
-                String ldapIdentities = (String)source.getProperty(IAMConfiguration.LDAP_IDENTITIES_FILE);
-
-                ldapIdentities = fillPath(ldapIdentities);
-
-                try {
-                    LdapBackend.start(ldapHost,ldapPort, ldapBaseDn, ldapIdentities);
-                } catch (Exception e) {
-                    throw new IAMException("IAM startup error: Identities backend cannot be started", e);
-                }
-            } else LOG.warn("LDAP identities backend is not properly configured. LDAP backend for IAM will not be started.");
         }
     }
 
