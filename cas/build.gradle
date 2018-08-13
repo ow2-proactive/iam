@@ -105,15 +105,12 @@ dependencies {
 
     // CAS File-based authentication
     compile "org.apereo.cas:cas-server-support-generic:${project.'version.cas'}"
-    
+
     //  To support SpringBootServletInitializer (when IAM is deployed as a traditional WAR file)
     compile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0'
 
     // To load IAM certificate into the keystore of the running java system (i.e., the underlying jvm)
     compile group: 'com.oneandone', name: 'composite-jks', version: '1.0'
-
-    // To delegate authentication to a SAML v2 Identity Provider (IDP)
-    compile "org.apereo.cas:cas-server-support-pac4j-webflow:${project.'version.cas'}"
 }
 
 war {
