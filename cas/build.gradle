@@ -103,9 +103,6 @@ dependencies {
     // CAS JWT
     compile "org.apereo.cas:cas-server-support-token-tickets:${project.'version.cas'}"
 
-    // CAS File-based authentication
-    compile "org.apereo.cas:cas-server-support-generic:${project.'version.cas'}"
-
     // CAS LDAP
     compile ("org.apereo.cas:cas-server-support-ldap:${project.'version.cas'}")
 
@@ -134,7 +131,6 @@ war {
     entryCompression = ZipEntryCompression.STORED
 
     manifest {
-        //attributes 'Start-Class': 'org.ow2.proactive.iam.startup.IAMApplication'
         attributes 'Start-Class': 'org.apereo.cas.web.CasWebApplication'
     }
 }
