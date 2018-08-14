@@ -72,9 +72,9 @@ public class StartupListener implements ApplicationListener<ApplicationEvent> {
 
     private static void startIdentitiesBackend(PropertySource<?> source){
 
-        LOG.info("Starting identities backend");
-
         if (source.getProperty(IAMConfiguration.BACKEND).equals(EMBEDDED_LDAP)) {
+
+            LOG.info("Starting identities backend");
             LOG.info("IAM is configured to use an embedded LDAP backend");
 
             if (source.containsProperty(IAMConfiguration.LDAP_HOST) &&
