@@ -13,7 +13,7 @@
   },
   "user" : {
     "@class" : "org.apereo.cas.adaptors.generic.CasUserAccount",
-    "password" : "user",
+    "password" : "pwd",
     "attributes" : {
       "@class" : "java.util.LinkedHashMap",
       "cn" : "user",
@@ -123,7 +123,7 @@
   },
   "watcher" : {
     "@class" : "org.apereo.cas.adaptors.generic.CasUserAccount",
-    "password" : "watcher_pwd",
+    "password" : "w_pwd",
     "attributes" : {
       "@class" : "java.util.LinkedHashMap",
       "cn" : "watcher",

@@ -120,7 +120,6 @@ war {
     entryCompression = ZipEntryCompression.STORED
 
     manifest {
-        //attributes 'Start-Class': 'org.ow2.proactive.iam.startup.IAMApplication'
         attributes 'Start-Class': 'org.apereo.cas.web.CasWebApplication'
     }
 }
