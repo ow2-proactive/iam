@@ -94,7 +94,7 @@ N.B. keep a blank line before and after this block (as for the other users)
 IAM uses a SSL certificate to secure its communications. The default certificate is located under `src/main/resources/config/iam/cas/keystore` (under the `cas` module). To generate a new certificate, use this command:
 
 ```bash
-sudo keytool -genkeypair -keysize 2048 -alias ${keyStoreAlias} -keypass ${keyPass} -keystore ${keyStoreName} -storepass ${keyStorePass}`
+sudo keytool -genkeypair -keysize 2048 -alias ${keyStoreAlias} -keyalg RSA -keypass ${keyPass} -keystore ${keyStoreName} -storepass ${keyStorePass}`
 ```
 N.B.: The CN of the generated certificate (the first param asked for) MUST be the same as the parameter `cas.host.name`, which means: localhost or the hostname.
 
