@@ -1,0 +1,13 @@
+{
+  "@class": "org.apereo.cas.services.RegexRegisteredService",
+  "serviceId": "^(?!.*(PACoreWithJWT)).*$",
+  "name": "IAMServer",
+  "id": 7,
+  "description": "IAM Server URL",
+  "evaluationOrder": 3,
+  "attributeReleasePolicy" : {
+    "@class": "org.apereo.cas.services.ReturnMappedAttributeReleasePolicy",
+    "authorizedToReleaseCredentialPassword": false
+  }
+}
+
