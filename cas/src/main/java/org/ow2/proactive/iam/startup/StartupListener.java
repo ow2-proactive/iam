@@ -13,6 +13,8 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.core.env.EnumerablePropertySource;
 import org.springframework.core.env.PropertySource;
 
+import java.util.regex.Pattern;
+
 public class StartupListener implements ApplicationListener<ApplicationEvent> {
 
     private static final Logger LOG = LoggerFactory.getLogger(StartupListener.class);
@@ -65,6 +67,7 @@ public class StartupListener implements ApplicationListener<ApplicationEvent> {
             SSLUtils.mergeKeyStoreWithSystem(certificatePath,certificatePassword);
 
         } catch (Exception e){
+            LOG.error("IAM startup error: SSL certificate cannot be added to the JVM truststore",e);
             throw new IAMException("IAM startup error: SSL certificate cannot be added to the JVM truststore",e);
         }
     }
@@ -102,7 +105,7 @@ public class StartupListener implements ApplicationListener<ApplicationEvent> {
 
         if (path.contains(PA_HOME_PLACEHOLDER)){
             CommonUtils.assertNotNull(System.getProperty(PA_HOME_PROPERTY),"Property " +PA_HOME_PROPERTY +" is not set");
-            path = path.replaceAll(PA_HOME_PLACEHOLDER, System.getProperty(PA_HOME_PROPERTY));
+            path = path.replaceAll(Pattern.quote(PA_HOME_PLACEHOLDER), System.getProperty(PA_HOME_PROPERTY));
         }
         return path;
     }
