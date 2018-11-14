@@ -1,9 +1,9 @@
 {
   "@class": "org.apereo.cas.services.RegexRegisteredService",
   "serviceId": "^(?!.*(PACoreWithJWT)).*$",
-  "name": "IAMServer",
+  "name": "IAM Microservice",
   "id": 7,
-  "description": "IAM Server URL",
+  "description": "ProActive Identity and Access Management Microservice",
   "evaluationOrder": 3,
   "attributeReleasePolicy" : {
     "@class": "org.apereo.cas.services.ReturnMappedAttributeReleasePolicy",

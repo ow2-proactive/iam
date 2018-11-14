@@ -1,11 +1,11 @@
 {
   "@class" : "java.util.LinkedHashMap",
-  "tobias" : {
+  "bob" : {
     "@class" : "org.apereo.cas.adaptors.generic.CasUserAccount",
     "password" : "tobias",
     "attributes" : {
       "@class" : "java.util.LinkedHashMap",
-      "cn" : "Tobias Wiens",
+      "commonName" : "Bob",
       "role" : "user"
     },
     "status" : "OK",
@@ -16,7 +16,7 @@
     "password" : "pwd",
     "attributes" : {
       "@class" : "java.util.LinkedHashMap",
-      "cn" : "user",
+      "commonName" : "user",
       "role" : "user"
     },
     "status" : "OK",
@@ -27,7 +27,7 @@
     "password" : "admin",
     "attributes" : {
       "@class" : "java.util.LinkedHashMap",
-      "cn" : "admin",
+      "commonName" : "admin",
       "role" : "admin, nsadmins"
     },
     "status" : "OK",
@@ -38,7 +38,7 @@
     "password" : "rm_pwd",
     "attributes" : {
       "@class" : "java.util.LinkedHashMap",
-      "cn" : "rm",
+      "commonName" : "rm",
       "role" : "admin, nsadmins"
     },
     "status" : "OK",
@@ -49,7 +49,7 @@
     "password" : "scheduler_pwd",
     "attributes" : {
       "@class" : "java.util.LinkedHashMap",
-      "cn" : "scheduler",
+      "commonName" : "scheduler",
       "role" : "user"
     },
     "status" : "OK",
@@ -60,7 +60,7 @@
     "password" : "pwd",
     "attributes" : {
       "@class" : "java.util.LinkedHashMap",
-      "cn" : "radmin",
+      "commonName" : "radmin",
       "role" : "rmcoreadmins"
     },
     "status" : "OK",
@@ -71,7 +71,7 @@
     "password" : "pwd",
     "attributes" : {
       "@class" : "java.util.LinkedHashMap",
-      "cn" : "nsadmin",
+      "commonName" : "nsadmin",
       "role" : "nsadmins"
     },
     "status" : "OK",
@@ -82,7 +82,7 @@
     "password" : "demo",
     "attributes" : {
       "@class" : "java.util.LinkedHashMap",
-      "cn" : "demo",
+      "commonName" : "demo",
       "role" : "admin"
     },
     "status" : "OK",
@@ -93,7 +93,7 @@
     "password" : "pwd",
     "attributes" : {
       "@class" : "java.util.LinkedHashMap",
-      "cn" : "guest",
+      "commonName" : "guest",
       "role" : "guests"
     },
     "status" : "OK",
@@ -104,7 +104,7 @@
     "password" : "pwd",
     "attributes" : {
       "@class" : "java.util.LinkedHashMap",
-      "cn" : "test_executor",
+      "commonName" : "test_executor",
       "role" : "admin"
     },
     "status" : "OK",
@@ -115,7 +115,7 @@
     "password" : "pwd",
     "attributes" : {
       "@class" : "java.util.LinkedHashMap",
-      "cn" : "test",
+      "commonName" : "test",
       "role" : ""
     },
     "status" : "OK",
@@ -126,7 +126,7 @@
     "password" : "w_pwd",
     "attributes" : {
       "@class" : "java.util.LinkedHashMap",
-      "cn" : "watcher",
+      "commonName" : "watcher",
       "role" : "watchers"
     },
     "status" : "OK",
@@ -137,7 +137,7 @@
     "password" : "pwd",
     "attributes" : {
       "@class" : "java.util.LinkedHashMap",
-      "cn" : "provider",
+      "commonName" : "provider",
       "role" : "providers"
     },
     "status" : "OK",
