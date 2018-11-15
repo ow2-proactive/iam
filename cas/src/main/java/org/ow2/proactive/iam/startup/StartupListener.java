@@ -105,7 +105,7 @@ public class StartupListener implements ApplicationListener<ApplicationEvent> {
 
         if (path.contains(PA_HOME_PLACEHOLDER)){
             CommonUtils.assertNotNull(System.getProperty(PA_HOME_PROPERTY),"Property " +PA_HOME_PROPERTY +" is not set");
-            path = path.replaceAll(Pattern.quote(PA_HOME_PLACEHOLDER), System.getProperty(PA_HOME_PROPERTY));
+            path = path.replace(PA_HOME_PLACEHOLDER, System.getProperty(PA_HOME_PROPERTY));
         }
         return path;
     }
